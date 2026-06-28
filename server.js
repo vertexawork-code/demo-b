@@ -2,15 +2,23 @@ const express = require('express');
 const cors = require('cors');
 
 const app = express();
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
 
-// Enable CORS for http://localhost:3000
+// Enable CORS for both local dev and deployed frontend
 app.use(cors({
-  origin: 'http://localhost:3000'
+  origin: [
+    'http://localhost:3000',
+    'https://your-frontend-project.vercel.app'  // 👈 replace with your actual frontend URL
+  ]
 }));
 
 // Parse JSON request bodies
 app.use(express.json());
+
+// Root route
+app.get("/", (req, res) => {
+  res.send("API is running ✅");
+});
 
 // POST /api/chat endpoint
 app.post('/api/chat', (req, res) => {
